@@ -8,4 +8,8 @@ export class Drawable {
     draw(ctx) {
 
     }
+
+    clear(ctx){
+
+    }
 }

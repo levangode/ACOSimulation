@@ -1,13 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="styles.css">
-    <title>Canvas Grid</title>
-    <style>
-        #canvas {
-            border: 1px solid black;
-        }
-    </style>
+    <title>Ant Colonization</title>
 </head>
 <body>
 <div id="controlPanel">
@@ -15,11 +10,11 @@
     <input type="number" id="canvasSize" name="canvasSize" value="500"><br>
     <label for="numBlueCells">Number of blue cells:</label>
     <input type="number" id="numBlueCells" name="numBlueCells" value="0"><br>
-    <button onclick="updateCanvas()">Update Canvas</button>
-    <button onclick="startGame()">Start Game</button>
-    <button onclick="stopGame()">Stop Game</button>
+    <button id="updateCanvas">Update Canvas</button>
+    <button id="startGame">Start Game</button>
+    <button id="stopGame">Stop Game</button>
 </div>
-<canvas id="myCanvas" width="700" height="500" style="border:1px solid #d3d3d3;">
+<canvas id="myCanvas" width="1000" height="700" style="border:5px solid #1a3110;">
     Your browser does not support the HTML5 canvas tag.
 </canvas>
 
