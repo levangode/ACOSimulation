@@ -21,6 +21,7 @@ html, body {
     border: 5px solid #1a3110;
     background: grey;
     padding: 10px;
+    text-align: right;
 }
 
 #myCanvas {
@@ -28,4 +29,8 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     border: 5px solid #1a3110;
+}
+
+#buttons{
+    text-align: center;
 }

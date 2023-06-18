@@ -1,7 +1,7 @@
 import {DrawableCell} from "./drawableCell.js";
 import {Pheromone} from "./pheromone.js";
 import {EmptyCell} from "./emptyCell.js";
-import {getGameState} from "../globalVars.js";
+import {getAlpha, getAntMemorySize, getGameState} from "../globalVars.js";
 
 export class Ant extends DrawableCell {
     //TODO: add homepoint
@@ -9,47 +9,58 @@ export class Ant extends DrawableCell {
     constructor(x, y, cellSize) {
         super(x, y, cellSize);
         this.color = '#25a996';
-        this.trail = [];
         this.memory = [];
-        this.memorySize = 10;
         this.searching = true;
     }
 
     moving(grid) {
-        //setInterval(() => {
-        if (this.searching) {
-            this.looking(grid);
-        } else {
-            this.goingBack(grid);
-        }
-        //}, 60)
-
-        //requestAnimationFrame(() => this.move(grid));
-    }
-
-    looking(grid) {
-        this.trail.forEach(trailCell => trailCell.draw(grid.context));
-
-        let nextCell = this.getMove(grid);
-        if(!nextCell) return;
-        this.move(grid, nextCell);
 
         if (grid.getCellAt(this.x, this.y) === "Food") {
             grid.addCell(new EmptyCell(this.x, this.y));
             this.searching = false;
         }
+        let nextCell;
+        if (this.searching) {
+            nextCell = this.getNextCell(grid);
+        } else {
+            nextCell = this.getNextCellHome(grid);
+        }
+        if (!nextCell) return;
+        this.move(grid, nextCell, !this.searching);
 
-        this.draw(grid.context);
+        if (this.isHomePoint(grid)) {
+            this.searching = true;
+        }
+
     }
 
-    move(grid, nextCell) {
+    isHomePoint(grid) {
+        return this.x === grid.cols / 2 && this.y === grid.rows / 2;
+    }
+
+
+    getNextCellHome(grid) {
+
+        let dx = Math.sign(grid.cols / 2 - this.x);
+        let dy = Math.sign(grid.rows / 2 - this.y);
+
+        return {x: this.x + dx, y: this.y + dy};
+    }
+
+    move(grid, nextCell, addPheromone) {
+        if (addPheromone) {
+            grid.addPheromone(new Pheromone(this.x, this.y));
+        }
         grid.moveAnt(this, nextCell.x - this.x, nextCell.y - this.y);
+        if (addPheromone && this.isHomePoint(grid)) {
+            grid.addPheromone(new Pheromone(this.x, this.y));
+        }
         this.updateMemory(nextCell);
     }
 
     updateMemory(nextCell) {
         this.memory.push(this.getCoordinateKey(nextCell.x, nextCell.y));
-        if (this.memory.length > this.memorySize) {
+        if (this.memory.length > getAntMemorySize()) {
             this.memory.shift();
         }
     }
@@ -58,7 +69,8 @@ export class Ant extends DrawableCell {
         return `${x},${y}`;
     }
 
-    getMove(grid) {
+
+    getNextCell(grid) {
         let nextCells = [
             {x: this.x - 1, y: this.y}, //left
             {x: this.x + 1, y: this.y}, //right
@@ -75,15 +87,14 @@ export class Ant extends DrawableCell {
             .filter(cell => cell.x >= 0 && cell.y >= 0 && cell.x < grid.cols && cell.y < grid.rows)
             .filter(cell => !this.memory.includes(this.getCoordinateKey(cell.x, cell.y)));
 
-        let alpha = 5;
         let total = 0;
         nextCells.forEach(cell => {
-            cell.probability = Math.pow(1 + grid.getPheromoneLevel(cell.x, cell.y), alpha);
+            cell.probability = Math.pow(1 + grid.getPheromoneLevel(cell.x, cell.y), getAlpha());
             total += cell.probability;
         });
 
         nextCells.forEach(cell => cell.probability /= total);
-        if(nextCells.length === 0){
+        if (nextCells.length === 0) {
             this.memory = [];
             return;
         }
@@ -100,7 +111,6 @@ export class Ant extends DrawableCell {
 
     }
 
-
     getMoveProbability(grid, x, y) {
         const alpha = 1;
         const beta = 1;
@@ -112,17 +122,5 @@ export class Ant extends DrawableCell {
 
     attractiveness(tau, theta, alpha, beta) {
         return (tau ** alpha) * (theta ** beta);
-    }
-
-    goingBack(grid) {
-
-        if (this.x === grid.cols / 2 && this.y === grid.rows / 2) {
-            this.searching = true;
-        }
-        let dx = Math.sign(grid.cols / 2 - this.x);
-        let dy = Math.sign(grid.rows / 2 - this.y);
-        grid.addTrail(new Pheromone(this.x, this.y));
-        grid.moveAnt(this, dx, dy);
-
     }
 }

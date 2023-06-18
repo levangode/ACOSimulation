@@ -51,7 +51,7 @@ export class Grid {
         }
     }
 
-    addTrail(pheromone) {
+    addPheromone(pheromone) {
         if (this.pheromonesGrid[pheromone.x][pheromone.y]) {
             if(this.pheromonesGrid[pheromone.x][pheromone.y].pheromoneLevel <= 45) {
                 this.pheromonesGrid[pheromone.x][pheromone.y].pheromoneLevel += 1;

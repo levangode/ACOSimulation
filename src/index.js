@@ -5,9 +5,9 @@ import {
     getGameState,
     islandSize,
     numAnts,
-    numIslands,
+    numIslands, setAlpha, setAntMemorySize,
     setEvaporationRate,
-    setGameState
+    setGameState, setPheromoneFoodDepositRate
 } from "./globalVars.js";
 import {Grid} from "./grid.js";
 
@@ -16,6 +16,8 @@ let canvas = document.getElementById('myCanvas');
 let context = canvas.getContext('2d');
 let grid = new Grid(canvas.height / cellSize, canvas.width / cellSize, context)
 let ants = Array.from({length: numAnts});
+let interval;
+let intervalTimeout = 120;
 
 
 setupControlPanel();
@@ -30,6 +32,31 @@ function setupControlPanel(){
         document.getElementById("evaporationRateValue").innerHTML = value;
         setEvaporationRate(value);
     });
+
+    document.getElementById("alpha").addEventListener('input', (e) => {
+        let value = e.target.value;
+        document.getElementById("alphaValue").innerHTML = value;
+        setAlpha(value);
+    });
+
+    document.getElementById("antMemory").addEventListener('input', (e) => {
+        let value = e.target.value;
+        document.getElementById("antMemoryValue").innerHTML = value;
+        setAntMemorySize(value);
+    });
+
+    document.getElementById("simulationSpeed").addEventListener('input', (e) => {
+        let value = e.target.value;
+        document.getElementById("simulationSpeedValue").innerHTML = value;
+        intervalTimeout = value;
+        antsMove();
+    });
+
+    document.getElementById("pheromoneFoodDepositRate").addEventListener('input', (e) => {
+        let value = e.target.value;
+        document.getElementById("pheromoneFoodDepositRateValue").innerHTML = value;
+        setPheromoneFoodDepositRate(value);
+    });
 }
 function setup() {
     initGrid();
@@ -40,10 +67,12 @@ function setup() {
 
 function startGame() {
     setGameState('playing');
+    antsMove();
 }
 
 function stopGame() {
     setGameState('setup');
+    clearInterval(interval);
 }
 
 function initGrid() {
@@ -54,12 +83,13 @@ function initGrid() {
 
 
 function antsMove() {
-    setInterval(() => {
+    clearInterval(interval);
+    interval = setInterval(() => {
         if (getGameState() === 'playing') {
             grid.evaporate();
             ants.forEach(ant => ant.moving(grid, context));
         }
-    }, 60);
+    }, intervalTimeout);
 }
 
 function initAnts() {

@@ -1,11 +1,12 @@
 import {DrawableCell} from "./drawableCell.js";
 import {EmptyCell} from "./emptyCell.js";
+import {getPheromoneFoodDepositRate} from "../globalVars.js";
 
 export class Pheromone extends DrawableCell {
 
     constructor(x, y, cellSize) {
         super(x, y, cellSize);
-        this.pheromoneLevel = 1;
+        this.pheromoneLevel = getPheromoneFoodDepositRate();
         this.color = `rgba(197, 35, 35, 0)`;
     }
 
