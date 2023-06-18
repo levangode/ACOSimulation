@@ -5,18 +5,37 @@
     <title>Ant Colonization</title>
 </head>
 <body>
-<div id="controlPanel">
-    <label for="canvasSize">Canvas size:</label>
-    <input type="number" id="canvasSize" name="canvasSize" value="500"><br>
-    <label for="numBlueCells">Number of blue cells:</label>
-    <input type="number" id="numBlueCells" name="numBlueCells" value="0"><br>
-    <button id="updateCanvas">Update Canvas</button>
-    <button id="startGame">Start Game</button>
-    <button id="stopGame">Stop Game</button>
+<div class="container">
+    <div id="controlPanel">
+        <div id="label">Color Changing Label</div>
+        <div class="inputField">
+            <label for="evaporationRate">Evaporation Rate:</label>
+            <input type="range" id="evaporationRate" name="evaporationRate" min="0.001" max="0.05" step="0.001"
+                   value="0.01">
+            <span id="evaporationRateValue">0.01</span>
+        </div>
+        <div class="inputField">
+            <label for="alpha">Alpha:</label>
+            <input type="range" id="alpha" name="alpha" min="1" max="10" step="1" value="5">
+            <span id="alphaValue">5</span>
+        </div>
+        <div class="inputField">
+            <label for="simulationSpeed">Simulation Speed:</label>
+            <input type="range" id="simulationSpeed" name="simulationSpeed" min="1" max="10" step="1" value="5">
+            <span id="simulationSpeedValue">5</span>
+        </div>
+        <div class="inputField">
+            <label for="antMemory">Ant Memory:</label>
+            <input type="range" id="antMemory" name="antMemory" min="0" max="5" step="1" value="2">
+            <span id="antMemoryValue">2</span>
+        </div>
+        <button id="startGame">Start Simulation</button>
+        <button id="stopGame">Pause Simulation</button>
+    </div>
+    <canvas id="myCanvas" width="1000" height="700" style="border:5px solid #1a3110;">
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
 </div>
-<canvas id="myCanvas" width="1000" height="700" style="border:5px solid #1a3110;">
-    Your browser does not support the HTML5 canvas tag.
-</canvas>
 
 <script type="module" src="src/index.js"></script>
 </body>

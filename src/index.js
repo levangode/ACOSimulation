@@ -1,6 +1,14 @@
 import {Food} from "./cells/food.js";
 import {Ant} from "./cells/ant.js";
-import {cellSize, islandSize, numAnts, numIslands, setGameState} from "./globalVars.js";
+import {
+    cellSize,
+    getGameState,
+    islandSize,
+    numAnts,
+    numIslands,
+    setEvaporationRate,
+    setGameState
+} from "./globalVars.js";
 import {Grid} from "./grid.js";
 
 
@@ -9,15 +17,26 @@ let context = canvas.getContext('2d');
 let grid = new Grid(canvas.height / cellSize, canvas.width / cellSize, context)
 let ants = Array.from({length: numAnts});
 
-document.getElementById("startGame").addEventListener('click', startGame);
-document.getElementById("stopGame").addEventListener('click', stopGame);
+
+setupControlPanel();
+setup();
 
 
-initGrid();
-randomizeFood();
-initAnts();
-
-antsMove();
+function setupControlPanel(){
+    document.getElementById("startGame").addEventListener('click', startGame);
+    document.getElementById("stopGame").addEventListener('click', stopGame);
+    document.getElementById("evaporationRate").addEventListener('input', (e) => {
+        let value = e.target.value;
+        document.getElementById("evaporationRateValue").innerHTML = value;
+        setEvaporationRate(value);
+    });
+}
+function setup() {
+    initGrid();
+    randomizeFood();
+    initAnts();
+    antsMove();
+}
 
 function startGame() {
     setGameState('playing');
@@ -35,7 +54,12 @@ function initGrid() {
 
 
 function antsMove() {
-    ants.forEach(ant => ant.move(grid, context));
+    setInterval(() => {
+        if (getGameState() === 'playing') {
+            grid.evaporate();
+            ants.forEach(ant => ant.moving(grid, context));
+        }
+    }, 60);
 }
 
 function initAnts() {

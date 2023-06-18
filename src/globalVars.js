@@ -1,14 +1,21 @@
-export const cellSize = 10;
-export const numAnts = 10;
-export const islandSize = 5;
-export const numIslands = 10;
-
-
-
-
+export const cellSize = 5;
+export const numAnts = 30;
+export const islandSize = 4;
+export const numIslands = 20;
 
 
 let gameState = 'setup';
+let evaporationRate = 0.001;
+
+
+
+export function getEvaporationRate(){
+    return evaporationRate;
+}
+
+export function setEvaporationRate(value){
+    evaporationRate = value;
+}
 export function getGameState(){
     return gameState;
 }

@@ -2,3 +2,30 @@ body {
     background-color: #171515;
     text-align: center;
 }
+
+html, body {
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#controlPanel {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #1a3110;
+    background: grey;
+    padding: 10px;
+}
+
+#myCanvas {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #1a3110;
+}

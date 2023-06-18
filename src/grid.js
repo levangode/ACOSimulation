@@ -1,5 +1,5 @@
 import {EmptyCell} from "./cells/emptyCell.js";
-import {cellSize} from "./globalVars.js";
+import {cellSize, getEvaporationRate} from "./globalVars.js";
 import {Food} from "./cells/food.js";
 
 
@@ -16,12 +16,13 @@ export class Grid {
     evaporate() {
         for(let i = 0; i<this.pheromones.length; i++){
             let pheromone = this.pheromones[i];
-            pheromone.opacity -= pheromone.decayRate;
-            if(pheromone.opacity <= 0){
+            pheromone.pheromoneLevel -= getEvaporationRate();
+            if(pheromone.pheromoneLevel <= 0){
                 this.pheromones.splice(i,1);
                 this.pheromonesGrid[pheromone.x][pheromone.y] = NaN;
+                this.addCell(new EmptyCell(pheromone.x, pheromone.y));
             } else {
-                if (["EmptyCell", "Trail", "Food"].includes(this.getCellAt(pheromone.x, pheromone.y))) {
+                if (["EmptyCell", "Pheromone", "Food"].includes(this.getCellAt(pheromone.x, pheromone.y))) {
                     pheromone.draw(this.context);
                 }
             }
@@ -30,15 +31,15 @@ export class Grid {
     }
 
     init() {
+        this.grid = Array.from({length: this.cols}).map(() => new Array(this.rows));
+        this.pheromonesGrid = Array.from({length: this.cols}).map(() => new Array(this.rows));
+        this.pheromones = [];
+
         for (let i = 0; i < this.cols; i++) {
             for (let j = 0; j < this.rows; j++) {
                 this.grid[i][j] = new EmptyCell(i, j, cellSize);
             }
         }
-
-        setInterval(() => {
-            this.evaporate();
-        }, 200)
     }
 
 
@@ -52,7 +53,9 @@ export class Grid {
 
     addTrail(pheromone) {
         if (this.pheromonesGrid[pheromone.x][pheromone.y]) {
-            this.pheromonesGrid[pheromone.x][pheromone.y].opacity += 1;
+            if(this.pheromonesGrid[pheromone.x][pheromone.y].pheromoneLevel <= 45) {
+                this.pheromonesGrid[pheromone.x][pheromone.y].pheromoneLevel += 1;
+            }
         } else {
             this.pheromones.push(pheromone);
             this.pheromonesGrid[pheromone.x][pheromone.y] = pheromone;
@@ -77,5 +80,9 @@ export class Grid {
 
     getCellAt(x, y) {
         return this.grid[x][y].constructor.name;
+    }
+
+    getPheromoneLevel(x, y){
+        return this.pheromonesGrid[x][y]?.pheromoneLevel ?? 0;
     }
 }
