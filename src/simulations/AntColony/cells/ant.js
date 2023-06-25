@@ -1,22 +1,27 @@
-import {DrawableCell} from "./drawableCell.js";
 import {Pheromone} from "./pheromone.js";
 import {EmptyCell} from "./emptyCell.js";
-import {getAlpha, getAntMemorySize, getGameState} from "../globalVars.js";
 
-export class Ant extends DrawableCell {
-    //TODO: add homepoint
-    //TODO: add heuristic
-    constructor(x, y, cellSize) {
-        super(x, y, cellSize);
+export class Ant  {
+    constructor(x, y, cellSize, config) {
+        this.x = x;
+        this.y = y;
+        this.cellSize = cellSize;
         this.color = '#25a996';
         this.memory = [];
         this.searching = true;
+        this.config = config;
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+        ctx.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
 
     moving(grid) {
 
         if (grid.getCellAt(this.x, this.y) === "Food") {
-            grid.addCell(new EmptyCell(this.x, this.y));
+            grid.addCell(new EmptyCell(this.x, this.y, this.cellSize));
             this.searching = false;
         }
         let nextCell;
@@ -49,18 +54,18 @@ export class Ant extends DrawableCell {
 
     move(grid, nextCell, addPheromone) {
         if (addPheromone) {
-            grid.addPheromone(new Pheromone(this.x, this.y));
+            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.config));
         }
         grid.moveAnt(this, nextCell.x - this.x, nextCell.y - this.y);
         if (addPheromone && this.isHomePoint(grid)) {
-            grid.addPheromone(new Pheromone(this.x, this.y));
+            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.config));
         }
         this.updateMemory(nextCell);
     }
 
     updateMemory(nextCell) {
         this.memory.push(this.getCoordinateKey(nextCell.x, nextCell.y));
-        if (this.memory.length > getAntMemorySize()) {
+        if (this.memory.length > this.config.antMemorySize) {
             this.memory.shift();
         }
     }
@@ -89,7 +94,7 @@ export class Ant extends DrawableCell {
 
         let total = 0;
         nextCells.forEach(cell => {
-            cell.probability = Math.pow(1 + grid.getPheromoneLevel(cell.x, cell.y), getAlpha());
+            cell.probability = Math.pow(1 + grid.getPheromoneLevel(cell.x, cell.y), this.config.alpha);
             total += cell.probability;
         });
 
@@ -109,18 +114,5 @@ export class Ant extends DrawableCell {
         }
         return nextCells[index];
 
-    }
-
-    getMoveProbability(grid, x, y) {
-        const alpha = 1;
-        const beta = 1;
-        const pheromone = 1;
-        const distance = 1;
-        const theta = 1 / distance;
-        let pNextState;
-    }
-
-    attractiveness(tau, theta, alpha, beta) {
-        return (tau ** alpha) * (theta ** beta);
     }
 }

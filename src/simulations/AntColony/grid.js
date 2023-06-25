@@ -1,26 +1,26 @@
 import {EmptyCell} from "./cells/emptyCell.js";
-import {cellSize, getEvaporationRate} from "./globalVars.js";
 import {Food} from "./cells/food.js";
 
 
 export class Grid {
-    constructor(numRows, numCols, context) {
+    constructor(numRows, numCols, context, config) {
         this.rows = numRows;
         this.cols = numCols;
         this.grid = Array.from({length: this.cols}).map(() => new Array(this.rows));
         this.pheromonesGrid = Array.from({length: this.cols}).map(() => new Array(this.rows));
         this.pheromones = [];
         this.context = context;
+        this.config = config;
     }
 
     evaporate() {
         for(let i = 0; i<this.pheromones.length; i++){
             let pheromone = this.pheromones[i];
-            pheromone.pheromoneLevel -= getEvaporationRate();
+            pheromone.pheromoneLevel -= this.config.evaporationRate;
             if(pheromone.pheromoneLevel <= 0){
                 this.pheromones.splice(i,1);
                 this.pheromonesGrid[pheromone.x][pheromone.y] = NaN;
-                this.addCell(new EmptyCell(pheromone.x, pheromone.y));
+                this.addCell(new EmptyCell(pheromone.x, pheromone.y, this.config.cellSize));
             } else {
                 if (["EmptyCell", "Pheromone", "Food"].includes(this.getCellAt(pheromone.x, pheromone.y))) {
                     pheromone.draw(this.context);
@@ -37,7 +37,7 @@ export class Grid {
 
         for (let i = 0; i < this.cols; i++) {
             for (let j = 0; j < this.rows; j++) {
-                this.grid[i][j] = new EmptyCell(i, j, cellSize);
+                this.grid[i][j] = new EmptyCell(i, j, this.config.cellSize);
             }
         }
     }
@@ -66,7 +66,7 @@ export class Grid {
         if(this.pheromonesGrid[ant.x][ant.y]){
             this.pheromonesGrid[ant.x][ant.y].draw(this.context);
         } else {
-            this.addCell(new EmptyCell(ant.x, ant.y));
+            this.addCell(new EmptyCell(ant.x, ant.y, this.config.cellSize));
         }
 
         ant.x = Math.min(Math.max(ant.x + dx, 0), this.cols - 1);
