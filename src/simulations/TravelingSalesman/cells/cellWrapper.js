@@ -5,9 +5,10 @@ export class CellWrapper {
         this.layers = new Map();
         this.layers.set(1, "EmptyCell");
         this.layers.set(2, "Road");
-        this.layers.set(3, "Pheromone");
-        this.layers.set(4, "City");
-        this.layers.set(5, "Ant");
+        this.layers.set(3, "Highlight");
+        this.layers.set(4, "Pheromone");
+        this.layers.set(5, "City");
+        this.layers.set(6, "Ant");
         this.drawables.set(drawableCell.constructor.name, drawableCell);
     }
 
@@ -33,12 +34,10 @@ export class CellWrapper {
         }
     }
 
-    async highlight(ctx){
+    highlight(ctx){
         if (this.drawables.has('Road')) {
             this.drawables.get('Road').highlight(ctx);
         }
-        await this.delay(180);
-        this.draw(ctx);
     }
 
     delay(ms) {

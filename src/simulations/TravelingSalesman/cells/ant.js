@@ -1,3 +1,5 @@
+import {Highlight} from "./highlight.js";
+
 export class Ant {
 
     constructor(x, y, cellSize, grid, context, currentCity, allCities) {
@@ -24,10 +26,14 @@ export class Ant {
     async move(cityIndex, edge) {
         this.grid.removeCell(this);
 
-        if(this.grid.config.showEdgeSelection || this.grid.config.showEdgeMovement) {
+        if (this.grid.config.showEdgeSelection || this.grid.config.showEdgeMovement) {
+            let highlights = [];
             for (const edgeCell of edge.edgeCells) {
-                this.grid.highlight(edgeCell);
+                highlights.push(new Highlight(edgeCell.x, edgeCell.y, edgeCell.cellSize));
             }
+
+            highlights.forEach(highlight => this.grid.addCell(highlight));
+            setTimeout(() => highlights.forEach(highlight => this.grid.removeCell(highlight)), 500);
         }
 
         this.x = this.allCities[cityIndex].x;
@@ -38,6 +44,10 @@ export class Ant {
         this.visitedCities[this.currentCity] = true;
         this.path.push(this.currentCity);
         this.totalTravelledDistance += edge.distance;
+
+        if (this.grid.config.showEdgeMovement) {
+            await this.delay(1000);
+        }
     }
 
     delay(ms) {

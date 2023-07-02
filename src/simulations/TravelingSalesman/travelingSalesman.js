@@ -87,10 +87,6 @@ export class TravelingSalesman {
                     if (nextCity != null) {
                         let edge = this.graph[ant.currentCity][nextCity];
                         await ant.move(nextCity, edge);
-
-                        if (this.config.showEdgeMovement) {
-                            await this.delay(1000);
-                        }
                     }
                 }
 
@@ -114,6 +110,9 @@ export class TravelingSalesman {
                 await this.delay(1000);
             }
             this.grid.redraw();
+            if (this.config.showPheromoneUpdate) {
+                await this.delay(2000);
+            }
             this.resetAnts();
         }
 

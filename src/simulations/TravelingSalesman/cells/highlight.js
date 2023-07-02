@@ -1,10 +1,10 @@
-export class Road {
+export class Highlight {
 
     constructor(x, y, cellSize) {
         this.x = x;
         this.y = y
         this.cellSize = cellSize;
-        this.color = 'rgb(37,169,150)';
+        this.color = 'rgb(255,0,0)';
     }
 
     draw(ctx){
