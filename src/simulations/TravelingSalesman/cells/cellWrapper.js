@@ -4,9 +4,9 @@ export class CellWrapper {
         this.drawables = new Map();
         this.layers = new Map();
         this.layers.set(1, "EmptyCell");
-        this.layers.set(2, "City");
-        this.layers.set(3, "Road");
-        this.layers.set(4, "Pheromone");
+        this.layers.set(2, "Road");
+        this.layers.set(3, "Pheromone");
+        this.layers.set(4, "City");
         this.layers.set(5, "Ant");
         this.drawables.set(drawableCell.constructor.name, drawableCell);
     }
@@ -21,10 +21,28 @@ export class CellWrapper {
         this.drawables.set(drawableCell.constructor.name, drawableCell);
     }
 
+    remove(drawableCell){
+        if(this.drawables.has(drawableCell.constructor.name)){
+            this.drawables.delete(drawableCell.constructor.name);
+        }
+    }
+
     drawLayer(layer, ctx){
         if (this.drawables.has(this.layers.get(layer))) {
             this.drawables.get(this.layers.get(layer)).draw(ctx);
         }
+    }
+
+    async highlight(ctx){
+        if (this.drawables.has('Road')) {
+            this.drawables.get('Road').highlight(ctx);
+        }
+        await this.delay(180);
+        this.draw(ctx);
+    }
+
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     draw(ctx) {

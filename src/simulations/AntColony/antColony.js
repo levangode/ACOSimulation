@@ -20,7 +20,7 @@ export class AntColony {
 
 
         this.setupControlPanel();
-        this.setup();
+        this.initializeSimulation();
     }
 
 
@@ -58,7 +58,7 @@ export class AntColony {
             this.config.pheromoneFoodDepositRate = value;
         });
     }
-    setup() {
+    initializeSimulation() {
         this.initGrid();
         this.randomizeFood();
         this.initAnts();

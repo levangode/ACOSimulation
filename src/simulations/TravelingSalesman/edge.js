@@ -5,6 +5,6 @@ export class Edge {
         this.to = to;
         this.distance = distance;
         this.edgeCells = edgeCells;
-        this.pheromoneAmount = 0.01;
+        this.pheromoneAmount = 1;
     }
 }

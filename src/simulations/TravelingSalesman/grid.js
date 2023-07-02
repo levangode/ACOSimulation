@@ -12,12 +12,17 @@ export class Grid {
     }
 
 
+    highlight(obj){
+        if(this.grid[obj.x][obj.y]) {
+            this.grid[obj.x][obj.y].highlight(this.context);
+        }
+    }
+
     init() {
         this.grid = Array.from({length: this.cols}).map(() => new Array(this.rows));
         this.context.clearRect(0, 0, this.cols * this.config.cellSize, this.rows * this.config.cellSize);
         this.redraw();
     }
-
 
     redraw(){
         for(let layer = 1; layer <=5; layer++){
@@ -28,6 +33,14 @@ export class Grid {
                     }
                 }
             }
+        }
+    }
+
+
+    removeCell(obj){
+        if(this.grid[obj.x][obj.y]) {
+            this.grid[obj.x][obj.y].remove(obj);
+            this.grid[obj.x][obj.y].draw(this.context);
         }
     }
 
@@ -51,4 +64,5 @@ export class Grid {
     getPheromoneLevel(x, y){
         return this.pheromonesGrid[x][y]?.pheromoneLevel ?? 0;
     }
+
 }
