@@ -10,11 +10,12 @@ export class City {
 
     draw(ctx) {
         ctx.beginPath();
-        ctx.arc(this.x * this.cellSize + this.cellSize / 2, this.y * this.cellSize + this.cellSize / 2, 15, 0, 2 * Math.PI);
+        ctx.arc(this.x * this.cellSize + this.cellSize / 2, this.y * this.cellSize + this.cellSize / 2, 12, 0, 2 * Math.PI);
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.lineWidth = 2;
         ctx.stroke();
+        ctx.lineWidth = 1;
         ctx.closePath();
     }
 
