@@ -1,5 +1,5 @@
-import {EmptyCell} from "./cells/emptyCell.js";
-import {CellWrapper} from "./cells/cellWrapper.js";
+import {EmptyCell} from "./emptyCell.js";
+import {CellWrapper} from "./cellWrapper.js";
 
 
 export class Grid {

@@ -1,5 +1,5 @@
-import {EmptyCell} from "./cells/emptyCell.js";
-import {Food} from "./cells/food.js";
+import {EmptyCell} from "./emptyCell.js";
+import {Food} from "./food.js";
 
 
 export class Grid {

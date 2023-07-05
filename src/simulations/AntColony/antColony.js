@@ -1,6 +1,6 @@
 import {Grid} from "./grid.js";
-import {Ant} from "./cells/ant.js";
-import {Food} from "./cells/food.js";
+import {Ant} from "./ant.js";
+import {Food} from "./food.js";
 import {AntColonyConfig} from "./antColonyConfig.js";
 
 

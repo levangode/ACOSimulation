@@ -1,10 +1,10 @@
 import {TravelingSalesmanConfig} from "./travelingSalesmanConfig.js";
 import {Grid} from "./grid.js";
-import {City} from "./cells/city.js";
+import {City} from "./city.js";
 import {Edge} from "./edge.js";
-import {Ant} from "./cells/ant.js";
-import {Road} from "./cells/road.js";
-import {Pheromone} from "./cells/pheromone.js";
+import {Ant} from "./ant.js";
+import {Road} from "./road.js";
+import {Pheromone} from "./pheromone.js";
 
 
 export class TravelingSalesman {
