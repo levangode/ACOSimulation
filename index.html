@@ -18,11 +18,12 @@
 </div>
 <div id="bottom">
     <div class="container">
-        <div id="antColony" class="container">
+        <div id="antColony" style="display: none" class="container">
             <div id="antColonyControls" class="controls">
                 <div class="inputField">
                     <label for="pheromoneFoodDepositRate">Pheromone Deposit Rate (Food):</label>
-                    <input type="range" id="pheromoneFoodDepositRate" name="evaporationRate" min="0.1" max="10" step="0.1"
+                    <input type="range" id="pheromoneFoodDepositRate" name="evaporationRate" min="0.1" max="10"
+                           step="0.1"
                            value="1">
                     <br><span id="pheromoneFoodDepositRateValue">1</span>
                 </div>
@@ -53,7 +54,7 @@
                 Your browser does not support the HTML5 canvas tag.
             </canvas>
         </div>
-        <div id="travelingSalesman" class="container">
+        <div id="travelingSalesman" style="display: none" class="container">
             <div id="travelingSalesmanControls" class="controls">
                 <div class="inputField">
                     <label for="tspAlpha">Alpha:</label>
@@ -77,7 +78,8 @@
                 </div>
                 <div class="inputField">
                     <label for="tspPheromoneDepositFactor">Pheromone Deposit Factor:</label>
-                    <input type="range" id="tspPheromoneDepositFactor" name="alpha" min="0.001" max="1" step="0.005" value="0.001">
+                    <input type="range" id="tspPheromoneDepositFactor" name="alpha" min="0.001" max="1" step="0.005"
+                           value="0.001">
                     <br><span id="tspPheromoneDepositFactorValue">0.001</span>
                 </div>
                 <div class="inputField">
@@ -87,7 +89,8 @@
                 </div>
                 <div class="inputField">
                     <label for="tspInitialPheromoneLevels">Initial Pheromone Levels:</label>
-                    <input type="range" id="tspInitialPheromoneLevels" name="alpha" min="0.001" max="1" step="0.005" value="0.02">
+                    <input type="range" id="tspInitialPheromoneLevels" name="alpha" min="0.001" max="1" step="0.005"
+                           value="0.02">
                     <br><span id="tspInitialPheromoneLevelsValue">0.02</span>
                 </div>
                 <div class="inputField">
@@ -101,6 +104,15 @@
                 <div class="inputField">
                     <label for="pheromoneUpdate">Pheromone Update:</label>
                     <input id="pheromoneUpdate" type="checkbox">
+                </div>
+                <div class="inputField">
+                    <label for="presetSelector">Choose Preset:</label>
+                    <select id="presetSelector">
+                        <option value="random">random</option>
+                        <option value=0>Map 1</option>
+                        <option value=1>Map 2</option>
+                        <option value=2>Map 3</option>
+                    </select>
                 </div>
                 <div class="inputField">
                     <label for="statusDisplay">Status:</label>

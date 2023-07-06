@@ -18,5 +18,6 @@ export class TravelingSalesmanConfig {
 
         this.averageDistance = 0;
         this.gameState = 'setup';
+        this.preset = 'random';
     }
 }

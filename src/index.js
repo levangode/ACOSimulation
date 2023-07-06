@@ -4,6 +4,7 @@ import {TravelingSalesman} from "./simulations/TravelingSalesman/travelingSalesm
 let simulation;
 
 document.getElementById("simulationSelector").addEventListener('change', (e) => {
+    simulation.pauseGame();
     switchSimulation();
 });
 

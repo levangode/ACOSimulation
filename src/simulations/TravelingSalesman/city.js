@@ -19,5 +19,11 @@ export class City {
         ctx.closePath();
     }
 
+    toJSON() {
+        return {
+            x: this.x,
+            y: this.y
+        }
+    }
 
 }

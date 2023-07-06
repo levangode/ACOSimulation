@@ -5,6 +5,7 @@ import {Edge} from "./edge.js";
 import {Ant} from "./ant.js";
 import {Road} from "./road.js";
 import {Pheromone} from "./pheromone.js";
+import {cityPresets} from "./presets.js";
 
 
 export class TravelingSalesman {
@@ -18,16 +19,8 @@ export class TravelingSalesman {
         this.cols = this.canvas.width / this.config.cellSize;
         this.numAnts = this.config.numAnts;
 
-        this.grid = new Grid(this.canvas.height / this.config.cellSize, this.canvas.width / this.config.cellSize, this.context, this.config);
-        this.ants = [];
-        this.cities = Array.from({length: this.config.numCities});
-        this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
-
-        this.interval = 0;
-        this.intervalTimeout = 120;
-
         this.setupControlPanel();
-        this.initializeSimulation();
+        this.init();
 
     }
 
@@ -129,18 +122,43 @@ export class TravelingSalesman {
         document.getElementById("pheromoneUpdate").addEventListener('input', (e) => {
             this.config.showPheromoneUpdate = e.target.checked;
         });
+
+        document.getElementById("presetSelector").addEventListener('change', (e) => {
+            this.config.gameState = 'setup';
+            this.config.preset = e.target.value;
+            this.init();
+        });
     }
 
 
-    initializeSimulation() {
-
+    init() {
+        this.initSimulation();
         this.initGrid();
-        this.randomizeCities();
+        if(this.config.preset !== 'random'){
+            this.restoreCities();
+        } else {
+            this.randomizeCities();
+        }
         this.randomizeRoutes();
         this.initPheromoneMatrix();
         this.initAnts();
 
         this.grid.redraw();
+    }
+
+    initSimulation(){
+        this.grid = new Grid(this.canvas.height / this.config.cellSize, this.canvas.width / this.config.cellSize, this.context, this.config);
+        this.ants = [];
+        this.cities = Array.from({length: this.config.numCities});
+        this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
+    }
+
+    restoreCities(){
+        let cityPreset = cityPresets[this.config.preset];
+        for (let a = 0; a < cityPreset.length; a++) {
+            this.cities[a] = new City(cityPreset[a].x, cityPreset[a].y, this.config.cellSize);
+            this.grid.addCell(this.cities[a]);
+        }
     }
 
     async runSimulation() {
@@ -149,9 +167,12 @@ export class TravelingSalesman {
 
         let maxIterations = this.config.maxIterations;
         for (let iteration = 0; iteration < maxIterations;) {
-            if(this.config.gameState !== 'playing') {
+            if(this.config.gameState === 'paused') {
                 await this.delay(1000);
                 continue;
+            }
+            if(this.config.gameState === 'setup') {
+                return;
             }
             this.updateStatus(`Iteration #${iteration+1}`)
             await this.delay(60);
