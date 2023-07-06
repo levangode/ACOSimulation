@@ -6,7 +6,7 @@ export class AntColonyConfig {
         this.islandSize = 4;
         this.numIslands = 20;
 
-        this.gameState = 'setup';
+        this.gameState = 'paused';
         this.evaporationRate = 0.001;
         this.alpha = 5;
         this.antMemorySize = 5;

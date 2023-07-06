@@ -62,17 +62,20 @@ export class AntColony {
         this.initGrid();
         this.randomizeFood();
         this.initAnts();
-        this.antsMove();
     }
 
     startGame() {
-        this.config.gameState = 'playing';
-        this.antsMove();
+        if(this.config.gameState !== 'playing'){
+            this.config.gameState = 'playing';
+            this.antsMove();
+        }
     }
 
-    stopGame() {
-        this.config.gameState = 'setup';
-        clearInterval(this.interval);
+    pauseGame() {
+        if(this.config.gameState !== 'paused') {
+            this.config.gameState = 'paused';
+            clearInterval(this.interval);
+        }
     }
 
     initGrid() {
@@ -96,7 +99,7 @@ export class AntColony {
         let x = this.grid.cols / 2;
         let y = this.grid.rows / 2;
 
-        this.ants = this.ants.map(() => new Ant(x, y, this.config.cellSize, this.config));
+        this.ants = this.ants.map(() => new Ant(x, y, this.config.cellSize, this.config, this.context));
         this.ants.forEach(ant => this.grid.addCell(ant));
 
     }

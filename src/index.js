@@ -10,7 +10,7 @@ document.getElementById("simulationSelector").addEventListener('change', (e) => 
 switchSimulation();
 
 document.getElementById("startGame").addEventListener('click', () => simulation.startGame());
-document.getElementById("stopGame").addEventListener('click', () => simulation.stopGame());
+document.getElementById("stopGame").addEventListener('click', () => simulation.pauseGame());
 
 
 

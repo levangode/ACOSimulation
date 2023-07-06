@@ -2,7 +2,7 @@ import {Pheromone} from "./pheromone.js";
 import {EmptyCell} from "./emptyCell.js";
 
 export class Ant  {
-    constructor(x, y, cellSize, config) {
+    constructor(x, y, cellSize, config, context) {
         this.x = x;
         this.y = y;
         this.cellSize = cellSize;
@@ -10,12 +10,13 @@ export class Ant  {
         this.memory = [];
         this.searching = true;
         this.config = config;
+        this.context = context;
     }
 
-    draw(ctx) {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
-        ctx.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+    draw() {
+        this.context.fillStyle = this.color;
+        this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+        this.context.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
 
     moving(grid) {

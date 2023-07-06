@@ -1,10 +1,8 @@
 export class Edge {
 
-    constructor(from, to, distance, edgeCells, cellSize) {
-        this.from = from;
-        this.to = to;
+    constructor(distance, edgeCells, pheromoneAmount) {
         this.distance = distance;
         this.edgeCells = edgeCells;
-        this.pheromoneAmount = 1;
+        this.pheromoneAmount = pheromoneAmount;
     }
 }
