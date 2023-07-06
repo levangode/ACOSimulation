@@ -6,7 +6,6 @@
 </head>
 <body>
 <div id="top">
-    <label for="simulationSelector">Choose Simulation</label>
     <select id="simulationSelector">
         <option value="travelingSalesman">Traveling Salesman</option>
         <option value="antColony">Ant Colony</option>
@@ -17,105 +16,101 @@
         <button id="stopGame">Pause Simulation</button>
     </div>
 </div>
-<div class="container">
-    <div id="antColony" class="container">
-        <div id="antColonyControls">
-            <div class="inputField">
-                <label for="pheromoneFoodDepositRate">Pheromone Deposit Rate (Food):</label>
-                <input type="range" id="pheromoneFoodDepositRate" name="evaporationRate" min="0.1" max="10" step="0.1"
-                       value="1">
-                <br><span id="pheromoneFoodDepositRateValue">1</span>
+<div id="bottom">
+    <div class="container">
+        <div id="antColony" class="container">
+            <div id="antColonyControls" class="controls">
+                <div class="inputField">
+                    <label for="pheromoneFoodDepositRate">Pheromone Deposit Rate (Food):</label>
+                    <input type="range" id="pheromoneFoodDepositRate" name="evaporationRate" min="0.1" max="10" step="0.1"
+                           value="1">
+                    <br><span id="pheromoneFoodDepositRateValue">1</span>
+                </div>
+                <div class="inputField">
+                    <label for="evaporationRate">Evaporation Rate:</label>
+                    <input type="range" id="evaporationRate" name="evaporationRate" min="0.001" max="0.05" step="0.001"
+                           value="0.01">
+                    <br><span id="evaporationRateValue">0.01</span>
+                </div>
+                <div class="inputField">
+                    <label for="alpha">Alpha:</label>
+                    <input type="range" id="alpha" name="alpha" min="1" max="10" step="0.1" value="5">
+                    <br><span id="alphaValue">5</span>
+                </div>
+                <div class="inputField">
+                    <label for="antMemory">Ant Memory:</label>
+                    <input type="range" id="antMemory" name="antMemory" min="0" max="10" step="1" value="5">
+                    <br><span id="antMemoryValue">5</span>
+                </div>
+                <div class="inputField">
+                    <label for="simulationSpeed">Simulation Speed:</label>
+                    <input type="range" id="simulationSpeed" name="simulationSpeed" min="10" max="360" step="10"
+                           value="120">
+                    <br><span id="simulationSpeedValue">120</span>
+                </div>
             </div>
-            <!--        <div class="inputField">-->
-            <!--            <label for="pheromoneWalkDepositRate">Pheromone Deposit Rate (Walk):</label>-->
-            <!--            <input type="range" id="pheromoneWalkDepositRate" name="evaporationRate" min="0.001" max="0.05" step="0.001"-->
-            <!--                   value="0.01">-->
-            <!--            <br><span id="pheromoneWalkDepositRateValue">0.01</span>-->
-            <!--        </div>-->
-            <div class="inputField">
-                <label for="evaporationRate">Evaporation Rate:</label>
-                <input type="range" id="evaporationRate" name="evaporationRate" min="0.001" max="0.05" step="0.001"
-                       value="0.01">
-                <br><span id="evaporationRateValue">0.01</span>
-            </div>
-            <div class="inputField">
-                <label for="alpha">Alpha:</label>
-                <input type="range" id="alpha" name="alpha" min="1" max="10" step="0.1" value="5">
-                <br><span id="alphaValue">5</span>
-            </div>
-            <div class="inputField">
-                <label for="antMemory">Ant Memory:</label>
-                <input type="range" id="antMemory" name="antMemory" min="0" max="10" step="1" value="5">
-                <br><span id="antMemoryValue">5</span>
-            </div>
-            <div class="inputField">
-                <label for="simulationSpeed">Simulation Speed:</label>
-                <input type="range" id="simulationSpeed" name="simulationSpeed" min="10" max="360" step="10"
-                       value="120">
-                <br><span id="simulationSpeedValue">120</span>
-            </div>
+            <canvas id="myCanvas" width="1200" height="800" class="canvas">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
         </div>
-        <canvas id="myCanvas" width="1200" height="800" style="border:5px solid #1a3110;">
-            Your browser does not support the HTML5 canvas tag.
-        </canvas>
-    </div>
-    <div id="travelingSalesman" class="container">
-        <div id="travelingSalesmanControls">
-            <div class="inputField">
-                <label for="tspAlpha">Alpha:</label>
-                <input type="range" id="tspAlpha" name="alpha" min="0" max="5" step="0.1" value="1">
-                <br><span id="tspAlphaValue">1</span>
+        <div id="travelingSalesman" class="container">
+            <div id="travelingSalesmanControls" class="controls">
+                <div class="inputField">
+                    <label for="tspAlpha">Alpha:</label>
+                    <input type="range" id="tspAlpha" name="alpha" min="0" max="5" step="0.1" value="1">
+                    <br><span id="tspAlphaValue">1</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspBeta">Beta:</label>
+                    <input type="range" id="tspBeta" name="alpha" min="0" max="5" step="0.1" value="1">
+                    <br><span id="tspBetaValue">1</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspNumberOfAnts">Number of Ants:</label>
+                    <input type="range" id="tspNumberOfAnts" name="alpha" min="10" max="100" step="1" value="10">
+                    <br><span id="tspNumberOfAntsValue">10</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspEvaporationRate">Evaporation Rate:</label>
+                    <input type="range" id="tspEvaporationRate" name="alpha" min="0" max="1" step="0.1" value="0.3">
+                    <br><span id="tspEvaporationRateValue">0.3</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspPheromoneDepositFactor">Pheromone Deposit Factor:</label>
+                    <input type="range" id="tspPheromoneDepositFactor" name="alpha" min="0.001" max="1" step="0.005" value="0.001">
+                    <br><span id="tspPheromoneDepositFactorValue">0.001</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspMaxIterations">Max Iterations:</label>
+                    <input type="range" id="tspMaxIterations" name="alpha" min="1" max="100" step="1" value="10">
+                    <br><span id="tspMaxIterationsValue">10</span>
+                </div>
+                <div class="inputField">
+                    <label for="tspInitialPheromoneLevels">Initial Pheromone Levels:</label>
+                    <input type="range" id="tspInitialPheromoneLevels" name="alpha" min="0.001" max="1" step="0.005" value="0.02">
+                    <br><span id="tspInitialPheromoneLevelsValue">0.02</span>
+                </div>
+                <div class="inputField">
+                    <label for="edgeSelection">Edge Selection:</label>
+                    <input id="edgeSelection" type="checkbox">
+                </div>
+                <div class="inputField">
+                    <label for="edgeMovement">Edge Movement:</label>
+                    <input id="edgeMovement" type="checkbox">
+                </div>
+                <div class="inputField">
+                    <label for="pheromoneUpdate">Pheromone Update:</label>
+                    <input id="pheromoneUpdate" type="checkbox">
+                </div>
+                <div class="inputField">
+                    <label for="statusDisplay">Status:</label>
+                    <input id="statusDisplay" type="text">
+                </div>
             </div>
-            <div class="inputField">
-                <label for="tspBeta">Beta:</label>
-                <input type="range" id="tspBeta" name="alpha" min="0" max="5" step="0.1" value="1">
-                <br><span id="tspBetaValue">1</span>
-            </div>
-            <div class="inputField">
-                <label for="tspNumberOfAnts">Number of Ants:</label>
-                <input type="range" id="tspNumberOfAnts" name="alpha" min="10" max="100" step="1" value="10">
-                <br><span id="tspNumberOfAntsValue">10</span>
-            </div>
-            <div class="inputField">
-                <label for="tspEvaporationRate">Evaporation Rate:</label>
-                <input type="range" id="tspEvaporationRate" name="alpha" min="0" max="1" step="0.1" value="0.3">
-                <br><span id="tspEvaporationRateValue">0.3</span>
-            </div>
-            <div class="inputField">
-                <label for="tspPheromoneDepositFactor">Pheromone Deposit Factor:</label>
-                <input type="range" id="tspPheromoneDepositFactor" name="alpha" min="0.001" max="1" step="0.005" value="0.001">
-                <br><span id="tspPheromoneDepositFactorValue">0.001</span>
-            </div>
-            <div class="inputField">
-                <label for="tspMaxIterations">Max Iterations:</label>
-                <input type="range" id="tspMaxIterations" name="alpha" min="1" max="100" step="1" value="10">
-                <br><span id="tspMaxIterationsValue">10</span>
-            </div>
-            <div class="inputField">
-                <label for="tspInitialPheromoneLevels">Initial Pheromone Levels:</label>
-                <input type="range" id="tspInitialPheromoneLevels" name="alpha" min="0.001" max="1" step="0.005" value="0.02">
-                <br><span id="tspInitialPheromoneLevelsValue">0.02</span>
-            </div>
-            <div class="inputField">
-                <label for="edgeSelection">Edge Selection:</label>
-                <input id="edgeSelection" type="checkbox">
-            </div>
-            <div class="inputField">
-                <label for="edgeMovement">Edge Movement:</label>
-                <input id="edgeMovement" type="checkbox">
-            </div>
-            <div class="inputField">
-                <label for="pheromoneUpdate">Pheromone Update:</label>
-                <input id="pheromoneUpdate" type="checkbox">
-            </div>
-            <div class="inputField">
-                <label for="statusDisplay">Status:</label>
-                <input id="statusDisplay" type="text">
-            </div>
+            <canvas id="tCanvas" width="1200" height="800" class="canvas">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
         </div>
-        <canvas id="tCanvas" width="1200" height="800" style="border:5px solid #1a3110;">
-            Your browser does not support the HTML5 canvas tag.
-        </canvas>
     </div>
 </div>
 

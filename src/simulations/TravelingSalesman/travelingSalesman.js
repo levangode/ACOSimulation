@@ -328,9 +328,9 @@ export class TravelingSalesman {
                 if (i === j) {
                     continue;
                 }
-                let connect = Math.random() < 0.2;
+                let connect = true //Math.random() < 0.2; we are doing complete graphs in this simulation
                 let distance = 0;
-                if (true) {
+                if (connect) {
                     let cityA = this.cities[i];
                     let cityB = this.cities[j];
 

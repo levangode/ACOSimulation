@@ -24,8 +24,7 @@ export class AntColony {
     }
 
 
-
-    setupControlPanel(){
+    setupControlPanel() {
 
         document.getElementById("evaporationRate").addEventListener('input', (e) => {
             let value = e.target.value;
@@ -58,6 +57,7 @@ export class AntColony {
             this.config.pheromoneFoodDepositRate = value;
         });
     }
+
     initializeSimulation() {
         this.initGrid();
         this.randomizeFood();
@@ -65,14 +65,14 @@ export class AntColony {
     }
 
     startGame() {
-        if(this.config.gameState !== 'playing'){
+        if (this.config.gameState !== 'playing') {
             this.config.gameState = 'playing';
             this.antsMove();
         }
     }
 
     pauseGame() {
-        if(this.config.gameState !== 'paused') {
+        if (this.config.gameState !== 'paused') {
             this.config.gameState = 'paused';
             clearInterval(this.interval);
         }
