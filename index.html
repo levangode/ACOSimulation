@@ -57,41 +57,59 @@
         <div id="travelingSalesman" style="display: none" class="container">
             <div id="travelingSalesmanControls" class="controls">
                 <div class="inputField">
+                    <label for="statusDisplay">Status:</label>
+                    <input type="button" style="width: 100%" id="statusDisplay" value="Setup">
+                </div>
+                <div class="inputField">
+                    <label for="presetSelector">Choose Preset:</label>
+                    <select id="presetSelector">
+                        <option value="Random">Random</option>
+                        <option value=0>Map 1</option>
+                        <option value=1>Map 2</option>
+                        <option value=2>Map 3</option>
+                    </select>
+                </div>
+                <div class="inputField">
                     <label for="tspAlpha">Alpha:</label>
-                    <input type="range" id="tspAlpha" name="alpha" min="0" max="5" step="0.1" value="1">
+                    <input type="range" id="tspAlpha" name="tspAlpha" min="0" max="5" step="0.1" value="1">
                     <br><span id="tspAlphaValue">1</span>
                 </div>
                 <div class="inputField">
                     <label for="tspBeta">Beta:</label>
-                    <input type="range" id="tspBeta" name="alpha" min="0" max="5" step="0.1" value="1">
+                    <input type="range" id="tspBeta" name="tspBeta" min="0" max="5" step="0.1" value="1">
                     <br><span id="tspBetaValue">1</span>
                 </div>
                 <div class="inputField">
                     <label for="tspNumberOfAnts">Number of Ants:</label>
-                    <input type="range" id="tspNumberOfAnts" name="alpha" min="10" max="100" step="1" value="10">
+                    <input type="range" id="tspNumberOfAnts" name="tspNumberOfAnts" min="10" max="100" step="1"
+                           value="10">
                     <br><span id="tspNumberOfAntsValue">10</span>
                 </div>
                 <div class="inputField">
                     <label for="tspEvaporationRate">Evaporation Rate:</label>
-                    <input type="range" id="tspEvaporationRate" name="alpha" min="0" max="1" step="0.1" value="0.3">
-                    <br><span id="tspEvaporationRateValue">0.3</span>
+                    <input type="range" id="tspEvaporationRate" name="tspEvaporationRate" min="0" max="0.0001" step="0.000005"
+                           value="0.00005">
+                    <br><span id="tspEvaporationRateValue">0.00005</span>
                 </div>
                 <div class="inputField">
                     <label for="tspPheromoneDepositFactor">Pheromone Deposit Factor:</label>
-                    <input type="range" id="tspPheromoneDepositFactor" name="alpha" min="0.001" max="1" step="0.005"
-                           value="0.001">
-                    <br><span id="tspPheromoneDepositFactorValue">0.001</span>
+                    <input type="range" id="tspPheromoneDepositFactor" name="tspPheromoneDepositFactor" min="0.001"
+                           max="0.1" step="0.0005"
+                           value="0.02">
+                    <br><span id="tspPheromoneDepositFactorValue">0.02</span>
                 </div>
                 <div class="inputField">
                     <label for="tspMaxIterations">Max Iterations:</label>
-                    <input type="range" id="tspMaxIterations" name="alpha" min="1" max="100" step="1" value="10">
+                    <input type="range" id="tspMaxIterations" name="tspMaxIterations" min="1" max="200" step="1"
+                           value="10">
                     <br><span id="tspMaxIterationsValue">10</span>
                 </div>
                 <div class="inputField">
                     <label for="tspInitialPheromoneLevels">Initial Pheromone Levels:</label>
-                    <input type="range" id="tspInitialPheromoneLevels" name="alpha" min="0.001" max="1" step="0.005"
-                           value="0.02">
-                    <br><span id="tspInitialPheromoneLevelsValue">0.02</span>
+                    <input type="range" id="tspInitialPheromoneLevels" name="tspInitialPheromoneLevels" min="0.0005"
+                           max="0.01" step="0.0005"
+                           value="0.001">
+                    <br><span id="tspInitialPheromoneLevelsValue">0.001</span>
                 </div>
                 <div class="inputField">
                     <label for="edgeSelection">Edge Selection:</label>
@@ -102,21 +120,10 @@
                     <input id="edgeMovement" type="checkbox">
                 </div>
                 <div class="inputField">
-                    <label for="pheromoneUpdate">Pheromone Update:</label>
-                    <input id="pheromoneUpdate" type="checkbox">
-                </div>
-                <div class="inputField">
-                    <label for="presetSelector">Choose Preset:</label>
-                    <select id="presetSelector">
-                        <option value="random">random</option>
-                        <option value=0>Map 1</option>
-                        <option value=1>Map 2</option>
-                        <option value=2>Map 3</option>
-                    </select>
-                </div>
-                <div class="inputField">
-                    <label for="statusDisplay">Status:</label>
-                    <input id="statusDisplay" type="text">
+                    <label for="iterationSpeed">Iteration Delay:</label>
+                    <input type="range" id="iterationSpeed" name="iterationSpeed" min="0" max="360" step="60"
+                           value="60">
+                    <br><span id="iterationSpeedValue">60</span>
                 </div>
             </div>
             <canvas id="tCanvas" width="1200" height="800" class="canvas">

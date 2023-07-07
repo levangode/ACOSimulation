@@ -17,7 +17,6 @@ export class TravelingSalesman {
 
         this.rows = this.canvas.height / this.config.cellSize;
         this.cols = this.canvas.width / this.config.cellSize;
-        this.numAnts = this.config.numAnts;
 
         this.setupControlPanel();
         this.init();
@@ -25,16 +24,23 @@ export class TravelingSalesman {
     }
 
     async startGame() {
-        if(this.config.gameState === 'setup') {
+        if (this.config.gameState === 'setup') {
             this.config.gameState = 'playing';
+            this.disableControls();
             await this.runSimulation();
         } else {
             this.config.gameState = 'playing';
         }
     }
 
-    pauseGame(){
+    pauseGame() {
         this.config.gameState = 'paused';
+    }
+
+    disableControls(){
+        document.getElementById("tspNumberOfAnts").disabled = true;
+        document.getElementById("tspMaxIterations").disabled = true;
+        document.getElementById("tspInitialPheromoneLevels").disabled = true;
     }
 
     drawTour(tour) {
@@ -47,7 +53,7 @@ export class TravelingSalesman {
 
     setupControlPanel() {
         document.getElementById("tspAlpha").value = this.config.alpha;
-        document.getElementById("tspAlphaValue").innerHTML = this.config.alpha
+        document.getElementById("tspAlphaValue").innerHTML = this.config.alpha;
         document.getElementById("tspAlpha").addEventListener('input', (e) => {
             let value = e.target.value;
             document.getElementById("tspAlphaValue").innerHTML = value;
@@ -56,59 +62,74 @@ export class TravelingSalesman {
 
 
         document.getElementById("tspBeta").value = this.config.beta;
-        document.getElementById("tspBetaValue").innerHTML = this.config.beta
+        document.getElementById("tspBetaValue").innerHTML = this.config.beta;
         document.getElementById("tspBeta").addEventListener('input', (e) => {
             let value = e.target.value;
             document.getElementById("tspBetaValue").innerHTML = value;
             this.config.beta = value;
         });
 
+        let tspNumberOfAntsTimeout;
         document.getElementById("tspNumberOfAnts").value = this.config.numAnts;
-        document.getElementById("tspNumberOfAntsValue").innerHTML = this.config.numAnts
+        document.getElementById("tspNumberOfAntsValue").innerHTML = this.config.numAnts;
         document.getElementById("tspNumberOfAnts").addEventListener('input', (e) => {
+            clearInterval(tspNumberOfAntsTimeout)
+
             let value = e.target.value;
             document.getElementById("tspNumberOfAntsValue").innerHTML = value;
             this.config.numAnts = value;
+
+            tspNumberOfAntsTimeout = setTimeout(() => {
+                this.initAnts();
+            }, 500);
         });
 
         document.getElementById("tspEvaporationRate").value = this.config.evaporationRate;
-        document.getElementById("tspEvaporationRateValue").innerHTML = this.config.evaporationRate
+        document.getElementById("tspEvaporationRateValue").innerHTML = this.config.evaporationRate;
         document.getElementById("tspEvaporationRate").addEventListener('input', (e) => {
             let value = e.target.value;
             document.getElementById("tspEvaporationRateValue").innerHTML = value;
             this.config.evaporationRate = value;
         });
 
-        document.getElementById("tspEvaporationRate").value = this.config.evaporationRate;
-        document.getElementById("tspEvaporationRateValue").innerHTML = this.config.evaporationRate
-        document.getElementById("tspEvaporationRate").addEventListener('input', (e) => {
-            let value = e.target.value;
-            document.getElementById("tspEvaporationRateValue").innerHTML = value;
-            this.config.evaporationRate = value;
-        });
 
         document.getElementById("tspPheromoneDepositFactor").value = this.config.pheromoneDepositFactor;
-        document.getElementById("tspPheromoneDepositFactorValue").innerHTML = this.config.pheromoneDepositFactor
+        document.getElementById("tspPheromoneDepositFactorValue").innerHTML = this.config.pheromoneDepositFactor;
         document.getElementById("tspPheromoneDepositFactor").addEventListener('input', (e) => {
             let value = e.target.value;
-            document.getElementById("tspPheromoneDepositFactor").innerHTML = value;
+            document.getElementById("tspPheromoneDepositFactorValue").innerHTML = value;
             this.config.pheromoneDepositFactor = value;
         });
 
         document.getElementById("tspMaxIterations").value = this.config.maxIterations;
-        document.getElementById("tspMaxIterationsValue").innerHTML = this.config.maxIterations
+        document.getElementById("tspMaxIterationsValue").innerHTML = this.config.maxIterations;
         document.getElementById("tspMaxIterations").addEventListener('input', (e) => {
             let value = e.target.value;
             document.getElementById("tspMaxIterationsValue").innerHTML = value;
             this.config.maxIterations = value;
         });
 
+        let tspInitialPheromoneLevelsTimeout;
         document.getElementById("tspInitialPheromoneLevels").value = this.config.initialPheromoneLevels;
-        document.getElementById("tspInitialPheromoneLevelsValue").innerHTML = this.config.initialPheromoneLevels
+        document.getElementById("tspInitialPheromoneLevelsValue").innerHTML = this.config.initialPheromoneLevels;
         document.getElementById("tspInitialPheromoneLevels").addEventListener('input', (e) => {
+            clearTimeout(tspInitialPheromoneLevelsTimeout);
+
             let value = e.target.value;
             document.getElementById("tspInitialPheromoneLevelsValue").innerHTML = value;
             this.config.initialPheromoneLevels = value;
+
+            tspInitialPheromoneLevelsTimeout = setTimeout(() => {
+                this.updateInitialPheromoneRates();
+            }, 500);
+        });
+
+        document.getElementById("iterationSpeed").value = this.config.iterationDelay;
+        document.getElementById("iterationSpeedValue").innerHTML = this.config.iterationDelay;
+        document.getElementById("iterationSpeed").addEventListener('input', (e) => {
+            let value = e.target.value;
+            document.getElementById("iterationSpeedValue").innerHTML = value;
+            this.config.iterationDelay = value;
         });
 
         document.getElementById("edgeSelection").addEventListener('input', (e) => {
@@ -119,12 +140,7 @@ export class TravelingSalesman {
             this.config.showEdgeMovement = e.target.checked;
         });
 
-        document.getElementById("pheromoneUpdate").addEventListener('input', (e) => {
-            this.config.showPheromoneUpdate = e.target.checked;
-        });
-
         document.getElementById("presetSelector").addEventListener('change', (e) => {
-            this.config.gameState = 'setup';
             this.config.preset = e.target.value;
             this.init();
         });
@@ -134,7 +150,7 @@ export class TravelingSalesman {
     init() {
         this.initSimulation();
         this.initGrid();
-        if(this.config.preset !== 'random'){
+        if (this.config.preset !== 'Random') {
             this.restoreCities();
         } else {
             this.randomizeCities();
@@ -146,14 +162,32 @@ export class TravelingSalesman {
         this.grid.redraw();
     }
 
-    initSimulation(){
+    updateInitialPheromoneRates(){
+        for (let i = 0; i < this.graph.length; i++) {
+            for (let j = 0; j < this.graph[0].length; j++) {
+                if (this.graph[i][j]) {
+                    this.graph[i][j].pheromoneAmount = this.config.initialPheromoneLevels;
+                }
+            }
+        }
+    }
+
+    initSimulation() {
+        this.config.gameState = 'setup';
         this.grid = new Grid(this.canvas.height / this.config.cellSize, this.canvas.width / this.config.cellSize, this.context, this.config);
         this.ants = [];
         this.cities = Array.from({length: this.config.numCities});
         this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
+
+        this.enableControls();
     }
 
-    restoreCities(){
+    enableControls(){
+        document.getElementById("tspNumberOfAnts").disabled = false;
+        document.getElementById("tspMaxIterations").disabled = false;
+        document.getElementById("tspInitialPheromoneLevels").disabled = false;
+    }
+    restoreCities() {
         let cityPreset = cityPresets[this.config.preset];
         for (let a = 0; a < cityPreset.length; a++) {
             this.cities[a] = new City(cityPreset[a].x, cityPreset[a].y, this.config.cellSize);
@@ -167,14 +201,14 @@ export class TravelingSalesman {
 
         let maxIterations = this.config.maxIterations;
         for (let iteration = 0; iteration < maxIterations;) {
-            if(this.config.gameState === 'paused') {
+            if (this.config.gameState === 'paused') {
                 await this.delay(1000);
                 continue;
             }
-            if(this.config.gameState === 'setup') {
+            if (this.config.gameState === 'setup') {
                 return;
             }
-            this.updateStatus(`Iteration #${iteration+1}`)
+            this.updateStatus(`Iteration #${iteration + 1}`)
             await this.delay(60);
             for (const ant of this.ants) {
                 for (let i = 0; i < this.cities.length - 1; i++) {
@@ -182,6 +216,8 @@ export class TravelingSalesman {
                     if (nextCity != null) {
                         let edge = this.graph[ant.currentCity][nextCity];
                         await ant.move(nextCity, edge);
+                    } else {
+                        console.log("Next city null");
                     }
                 }
 
@@ -199,19 +235,22 @@ export class TravelingSalesman {
                 }
             }
 
-            this.updatePheromones();
 
-            if (this.config.showPheromoneUpdate) {
-                await this.delay(1000);
+            if (this.config.iterationDelay > 0) {
+                await this.delay(this.config.iterationDelay);
             }
+            this.updatePheromones();
             this.grid.redraw();
-            if (this.config.showPheromoneUpdate) {
-                await this.delay(2000);
+            if (this.config.iterationDelay > 0) {
+                await this.delay(this.config.iterationDelay);
             }
             this.resetAnts();
             iteration++;
         }
 
+        this.updateStatus(`Best Tour Found!`);
+        await this.delay(1000);
+        this.updateStatus(`Best Tour Length: ${bestTourLength.toFixed(2)}`)
         this.drawTour(bestTour);
     }
 
@@ -226,7 +265,7 @@ export class TravelingSalesman {
         // Pheromone evaporation
         for (let i = 0; i < this.graph.length; i++) {
             for (let j = i + 1; j < this.graph[0].length; j++) {
-                this.graph[i][j].pheromoneAmount -= evaporationRate;
+                this.graph[i][j].pheromoneAmount = Math.max(this.config.minimumPheromoneAmount, this.graph[i][j].pheromoneAmount - evaporationRate);
             }
         }
 
@@ -238,7 +277,7 @@ export class TravelingSalesman {
             for (let i = 0; i < path.length - 1; i++) {
                 let cityA = path[i];
                 let cityB = path[i + 1];
-                this.graph[cityA][cityB].pheromoneAmount = Math.max(0, this.graph[cityA][cityB].pheromoneAmount + pheromoneToAdd);
+                this.graph[cityA][cityB].pheromoneAmount = Math.max(this.config.minimumPheromoneAmount, this.graph[cityA][cityB].pheromoneAmount + pheromoneToAdd);
                 //this.graph[cityB][cityA].pheromoneAmount += pheromoneToAdd;
             }
         });
@@ -302,7 +341,8 @@ export class TravelingSalesman {
     }
 
     initAnts() {
-        for (let i = 0; i < this.numAnts; i++) {
+        this.ants = [];
+        for (let i = 0; i < this.config.numAnts; i++) {
             let randomCity = this.getRandomCity();
             let ant = new Ant(
                 this.cities[randomCity].x,
@@ -425,7 +465,7 @@ export class TravelingSalesman {
         this.ants.forEach(ant => ant.reset(this.getRandomCity()));
     }
 
-    updateStatus(statusString){
+    updateStatus(statusString) {
         document.getElementById("statusDisplay").value = statusString;
     }
 }

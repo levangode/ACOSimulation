@@ -16,12 +16,13 @@ export class Pheromone {
         let prevColor = ctx.strokeStyle;
         this.color = this.getColor();
         ctx.strokeStyle = this.color;
+        ctx.lineWidth = 2;
         ctx.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
         ctx.strokeStyle = prevColor;
     }
 
     getColor() {    //-90; 60
-        let maxDepositEachTime = this.config.pheromoneDepositFactor / (this.config.averageDistance * this.config.numCities) * this.config.numAnts - this.config.evaporationRate;
+        let maxDepositEachTime = (this.config.pheromoneDepositFactor / this.config.averageDistance / 4)  * this.config.numAnts - this.config.evaporationRate;
         let maxDepositAmount = maxDepositEachTime * this.config.maxIterations;
         let factor = 150 / maxDepositAmount;
         //0 - 150

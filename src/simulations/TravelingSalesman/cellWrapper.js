@@ -5,8 +5,8 @@ export class CellWrapper {
         this.layers = new Map();
         this.layers.set(1, "EmptyCell");
         this.layers.set(2, "Road");
-        this.layers.set(3, "Highlight");
-        this.layers.set(4, "Pheromone");
+        this.layers.set(3, "Pheromone");
+        this.layers.set(4, "Highlight");
         this.layers.set(5, "City");
         this.layers.set(6, "Ant");
         this.drawables.set(drawableCell.constructor.name, drawableCell);
