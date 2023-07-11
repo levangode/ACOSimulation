@@ -28,7 +28,7 @@ export class Pheromone {
         //0 - 150
         //0 - maxPheromoneAmount
         let progress = Math.max(0, this.edge.pheromoneAmount - this.config.initialPheromoneLevels) * factor;
-        let hue = (60 - progress) % 360;
+        let hue = (50 - progress) % 360;
         let opacity = Math.max(Math.min(this.edge.pheromoneAmount / this.config.initialPheromoneLevels, 1), 0);
         return `hsl(${hue}, 100%, 50%, ${opacity})`;
     }

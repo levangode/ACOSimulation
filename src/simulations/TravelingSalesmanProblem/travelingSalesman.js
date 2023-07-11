@@ -41,6 +41,7 @@ export class TravelingSalesman {
         document.getElementById("tspNumberOfAnts").disabled = true;
         document.getElementById("tspMaxIterations").disabled = true;
         document.getElementById("tspInitialPheromoneLevels").disabled = true;
+        document.getElementById("tspNumCities").disabled = true;
     }
 
     drawTour(tour) {
@@ -52,6 +53,22 @@ export class TravelingSalesman {
     }
 
     setupControlPanel() {
+        document.getElementById("tspNumCities").value = this.config.numCities;
+        document.getElementById("tspNumCitiesValue").innerHTML = this.config.numCities;
+
+        let tspNumCitiesTimeout;
+        document.getElementById("tspNumCities").addEventListener('input', (e) => {
+            clearInterval(tspNumCitiesTimeout);
+
+            let value = e.target.value;
+            document.getElementById("tspNumCitiesValue").innerHTML = value;
+            this.config.numCities = parseInt(value);
+
+            tspNumCitiesTimeout = setTimeout(() => {
+                this.init();
+            }, 500);
+        });
+
         document.getElementById("tspAlpha").value = this.config.alpha;
         document.getElementById("tspAlphaValue").innerHTML = this.config.alpha;
         document.getElementById("tspAlpha").addEventListener('input', (e) => {
@@ -73,7 +90,7 @@ export class TravelingSalesman {
         document.getElementById("tspNumberOfAnts").value = this.config.numAnts;
         document.getElementById("tspNumberOfAntsValue").innerHTML = this.config.numAnts;
         document.getElementById("tspNumberOfAnts").addEventListener('input', (e) => {
-            clearInterval(tspNumberOfAntsTimeout)
+            clearInterval(tspNumberOfAntsTimeout);
 
             let value = e.target.value;
             document.getElementById("tspNumberOfAntsValue").innerHTML = value;
@@ -176,8 +193,7 @@ export class TravelingSalesman {
         this.config.gameState = 'setup';
         this.grid = new Grid(this.canvas.height / this.config.cellSize, this.canvas.width / this.config.cellSize, this.context, this.config);
         this.ants = [];
-        this.cities = Array.from({length: this.config.numCities});
-        this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
+
 
         this.enableControls();
     }
@@ -186,9 +202,15 @@ export class TravelingSalesman {
         document.getElementById("tspNumberOfAnts").disabled = false;
         document.getElementById("tspMaxIterations").disabled = false;
         document.getElementById("tspInitialPheromoneLevels").disabled = false;
+        document.getElementById("tspNumCities").disabled = false;
     }
     restoreCities() {
         let cityPreset = cityPresets[this.config.preset];
+
+        this.config.numCities = cityPreset.length;
+        this.cities = Array.from({length: this.config.numCities});
+        this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
+
         for (let a = 0; a < cityPreset.length; a++) {
             this.cities[a] = new City(cityPreset[a].x, cityPreset[a].y, this.config.cellSize);
             this.grid.addCell(this.cities[a]);
@@ -278,7 +300,6 @@ export class TravelingSalesman {
                 let cityA = path[i];
                 let cityB = path[i + 1];
                 this.graph[cityA][cityB].pheromoneAmount = Math.max(this.config.minimumPheromoneAmount, this.graph[cityA][cityB].pheromoneAmount + pheromoneToAdd);
-                //this.graph[cityB][cityA].pheromoneAmount += pheromoneToAdd;
             }
         });
     }
@@ -367,6 +388,8 @@ export class TravelingSalesman {
     }
 
     randomizeCities() {
+        this.cities = Array.from({length: this.config.numCities});
+        this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
         for (let a = 0; a < this.config.numCities; a++) {
             let x = Math.floor(Math.random() * this.grid.cols);
             let y = Math.floor(Math.random() * this.grid.rows);

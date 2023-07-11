@@ -1,5 +1,5 @@
-import {AntColony} from "./simulations/AntColony/antColony.js";
-import {TravelingSalesman} from "./simulations/TravelingSalesman/travelingSalesman.js";
+import {AntColony} from "./simulations/AntColonyOptimization/antColony.js";
+import {TravelingSalesman} from "./simulations/TravelingSalesmanProblem/travelingSalesman.js";
 
 let simulation;
 
