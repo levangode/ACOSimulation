@@ -115,7 +115,7 @@ export class AntColony {
             for (let i = 0; i < this.config.islandSize; i++) {
                 for (let j = 0; j < this.config.islandSize; j++) {
                     if (this.isValidCoordinate(x + i, y + j)) {
-                        this.grid.addCell(new Food(x + i, y + j, this.config.cellSize));
+                        this.grid.addCell(new Food(x + i, y + j, this.config.cellSize, this.context));
                     }
                 }
             }

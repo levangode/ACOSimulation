@@ -2,22 +2,25 @@ import {EmptyCell} from "./emptyCell.js";
 
 export class Pheromone {
 
-    constructor(x, y, cellSize, config) {
+    constructor(x, y, cellSize, context, config) {
+        this.color = `rgba(197, 35, 35, 0)`;
+
         this.x = x;
         this.y = y;
         this.cellSize = cellSize;
+        this.context = context;
+
         this.config = config;
         this.pheromoneLevel = this.config.pheromoneFoodDepositRate;
-        this.color = `rgba(197, 35, 35, 0)`;
     }
 
 
-    draw(ctx) {
-        new EmptyCell(this.x, this.y, this.cellSize).draw(ctx);
+    draw() {
+        new EmptyCell(this.x, this.y, this.cellSize, this.context).draw();
         this.color = this.getColor(this.pheromoneLevel);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
-        ctx.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+        this.context.fillStyle = this.color;
+        this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+        this.context.strokeRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
 
     getColor(pheromoneLevel) {

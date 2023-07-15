@@ -1,16 +1,18 @@
 import {Pheromone} from "./pheromone.js";
 import {EmptyCell} from "./emptyCell.js";
 
-export class Ant  {
+export class Ant {
     constructor(x, y, cellSize, config, context) {
+        this.color = '#25a996';
+
         this.x = x;
         this.y = y;
         this.cellSize = cellSize;
-        this.color = '#25a996';
+        this.context = context;
+
+        this.config = config;
         this.memory = [];
         this.searching = true;
-        this.config = config;
-        this.context = context;
     }
 
     draw() {
@@ -22,7 +24,7 @@ export class Ant  {
     moving(grid) {
 
         if (grid.getCellAt(this.x, this.y) === "Food") {
-            grid.addCell(new EmptyCell(this.x, this.y, this.cellSize));
+            grid.addCell(new EmptyCell(this.x, this.y, this.cellSize, this.context));
             this.searching = false;
         }
         let nextCell;
@@ -55,11 +57,11 @@ export class Ant  {
 
     move(grid, nextCell, addPheromone) {
         if (addPheromone) {
-            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.config));
+            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.context, this.config));
         }
         grid.moveAnt(this, nextCell.x - this.x, nextCell.y - this.y);
         if (addPheromone && this.isHomePoint(grid)) {
-            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.config));
+            grid.addPheromone(new Pheromone(this.x, this.y, this.cellSize, this.context, this.config));
         }
         this.updateMemory(nextCell);
     }
