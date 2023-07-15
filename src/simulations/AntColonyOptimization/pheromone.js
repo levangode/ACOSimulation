@@ -25,6 +25,6 @@ export class Pheromone {
 
     getColor(pheromoneLevel) {
         let hue = 60 - pheromoneLevel * 3;
-        return `hsl(${hue}, 100%, 50%, ${Math.min(1, this.pheromoneLevel)})`;
+        return `hsl(${hue}, 100%, 50%, ${Math.min(1, this.pheromoneLevel)})`;//test
     }
 }
