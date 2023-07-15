@@ -3,13 +3,14 @@ import {Highlight} from "./highlight.js";
 export class Ant {
 
     constructor(x, y, cellSize, grid, context, currentCity, allCities) {
+        this.color = 'rgb(255,0,0)';
+
         this.x = x;
         this.y = y;
         this.cellSize = cellSize;
-        this.color = 'rgb(255,0,0)';
-        this.grid = grid;
         this.context = context;
 
+        this.grid = grid;
         this.currentCity = currentCity;
         this.allCities = allCities;
         this.visitedCities = Array(allCities.length).fill(false);
@@ -29,7 +30,7 @@ export class Ant {
         if (this.grid.config.showEdgeSelection || this.grid.config.showEdgeMovement) {
             let highlights = [];
             for (const edgeCell of edge.edgeCells) {
-                highlights.push(new Highlight(edgeCell.x, edgeCell.y, edgeCell.cellSize));
+                highlights.push(new Highlight(edgeCell.x, edgeCell.y, edgeCell.cellSize, this.context));
             }
 
             highlights.forEach(highlight => this.grid.addCell(highlight));

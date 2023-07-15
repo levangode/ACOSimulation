@@ -37,7 +37,7 @@ export class TravelingSalesman {
         this.config.gameState = 'paused';
     }
 
-    disableControls(){
+    disableControls() {
         document.getElementById("tspNumberOfAnts").disabled = true;
         document.getElementById("tspMaxIterations").disabled = true;
         document.getElementById("tspInitialPheromoneLevels").disabled = true;
@@ -179,7 +179,7 @@ export class TravelingSalesman {
         this.grid.redraw();
     }
 
-    updateInitialPheromoneRates(){
+    updateInitialPheromoneRates() {
         for (let i = 0; i < this.graph.length; i++) {
             for (let j = 0; j < this.graph[0].length; j++) {
                 if (this.graph[i][j]) {
@@ -198,12 +198,13 @@ export class TravelingSalesman {
         this.enableControls();
     }
 
-    enableControls(){
+    enableControls() {
         document.getElementById("tspNumberOfAnts").disabled = false;
         document.getElementById("tspMaxIterations").disabled = false;
         document.getElementById("tspInitialPheromoneLevels").disabled = false;
         document.getElementById("tspNumCities").disabled = false;
     }
+
     restoreCities() {
         let cityPreset = cityPresets[this.config.preset];
 
@@ -212,7 +213,7 @@ export class TravelingSalesman {
         this.graph = Array.from({length: this.config.numCities}).map(() => new Array(this.config.numCities));   //contains pheromones as well
 
         for (let a = 0; a < cityPreset.length; a++) {
-            this.cities[a] = new City(cityPreset[a].x, cityPreset[a].y, this.config.cellSize);
+            this.cities[a] = new City(cityPreset[a].x, cityPreset[a].y, this.config.cellSize, this.context);
             this.grid.addCell(this.cities[a]);
         }
     }
@@ -353,7 +354,7 @@ export class TravelingSalesman {
                 if (this.graph[i][j]) {
                     let edge = this.graph[i][j];
                     edge.edgeCells.forEach(edgeCell => {
-                        let pheromone = new Pheromone(edgeCell.x, edgeCell.y, this.config.cellSize, edge, this.config);
+                        let pheromone = new Pheromone(edgeCell.x, edgeCell.y, this.config.cellSize, this.context, edge, this.config);
                         this.grid.addCell(pheromone);
                     });
                 }
@@ -399,7 +400,7 @@ export class TravelingSalesman {
                 y = Math.floor(Math.random() * this.grid.rows);
             }
 
-            this.cities[a] = new City(x, y, this.config.cellSize);
+            this.cities[a] = new City(x, y, this.config.cellSize, this.context);
             this.grid.addCell(this.cities[a]);
         }
     }
@@ -430,7 +431,7 @@ export class TravelingSalesman {
                         x = x + dx;
                         y = y + dy;
                         if (x !== cityB.x || y !== cityB.y) {
-                            let road = new Road(x, y, this.config.cellSize);
+                            let road = new Road(x, y, this.config.cellSize, this.context);
                             edgeCells.push(road);
                             this.grid.addCell(road);
                         }
@@ -462,7 +463,7 @@ export class TravelingSalesman {
             x = x + dx;
             y = y + dy;
             if (x !== cityB.x || y !== cityB.y) {
-                let road = new Road(x, y, this.config.cellSize);
+                let road = new Road(x, y, this.config.cellSize, this.context);
                 edgeCells.push(road);
                 this.grid.addCell(road);
             }
@@ -473,9 +474,9 @@ export class TravelingSalesman {
         this.graph[to][from] = this.graph[from][to];
     }
 
-    calculateDistance(city, city2) {
-        let deltaX = Math.abs(city.x - city2.x);
-        let deltaY = Math.abs(city.y - city2.y);
+    calculateDistance(cityA, cityB) {
+        let deltaX = Math.abs(cityA.x - cityB.x);
+        let deltaY = Math.abs(cityA.y - cityB.y);
         let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         return distance;
     }
